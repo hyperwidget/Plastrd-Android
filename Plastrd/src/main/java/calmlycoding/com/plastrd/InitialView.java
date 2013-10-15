@@ -1,7 +1,6 @@
 package calmlycoding.com.plastrd;
 
 import java.util.ArrayList;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.AlarmManager;
@@ -20,6 +19,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +36,6 @@ import android.widget.Toast;
 
 public class InitialView extends FragmentActivity implements
         ActionBar.TabListener {
-
-
-    // SideMenuItems Listview
-    ListView lv;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -62,15 +59,12 @@ public class InitialView extends FragmentActivity implements
         setContentView(R.layout.activity_initialview);
         global = (Plastrd) getApplicationContext();
 
-        // customize the SlidingMenu
-
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         if (!global.connected) {
-
             Toast toast = Toast.makeText(InitialView.this, "No Connection.", Toast.LENGTH_LONG);
             toast.show();
         } else {
@@ -113,18 +107,16 @@ public class InitialView extends FragmentActivity implements
                         .setTabListener(this));
             }
 
-            Intent myIntent = new Intent(InitialView.this, RepeatingAlarm.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(InitialView.this, 0, myIntent, 0);
 
-            // We want the alarm to go off 15 seconds from now.
-            long firstTime = SystemClock.elapsedRealtime();
-            firstTime += 15 * 1000;
-
-            // Schedule the alarm!
-            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-            am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
-                    15 * 1000, pendingIntent);
         }
+    }
+
+    //Menu settings
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     //Onclick menu options
@@ -135,12 +127,19 @@ public class InitialView extends FragmentActivity implements
         switch (item.getItemId()) {
             case android.R.id.home:
                 return true;
+            case R.id.turnOff:
+                stopService();
+                return true;
+            case R.id.turnOn:
+                startService();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void stoppit() {
+    //Stops the repeated broadcast receiver alarm
+    public void stopService() {
         Intent myIntent = new Intent(InitialView.this, RepeatingAlarm.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(InitialView.this, 0, myIntent, 0);
 
@@ -149,6 +148,25 @@ public class InitialView extends FragmentActivity implements
         am.cancel(pendingIntent);
 
         Toast toast = Toast.makeText(InitialView.this, "Your playlist has been turned off.", Toast.LENGTH_LONG);
+        toast.show();
+    }
+
+    //Starts the repeated broadcast receiver alarm
+    public void startService() {
+        //Set up repeating alarm code (This will have to be moved to a start service method after playlists are set up
+        Intent myIntent = new Intent(InitialView.this, RepeatingAlarm.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(InitialView.this, 0, myIntent, 0);
+
+        // We want the alarm to go off 15 seconds from now.
+        long firstTime = SystemClock.elapsedRealtime();
+        firstTime += 15 * 1000;
+
+        // Schedule the alarm!
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+                15 * 1000, pendingIntent);
+
+        Toast toast = Toast.makeText(InitialView.this, "Random playlist has been turned on.", Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -185,7 +203,7 @@ public class InitialView extends FragmentActivity implements
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Show 6 total pages.
             return 6;
         }
 
@@ -232,18 +250,17 @@ public class InitialView extends FragmentActivity implements
                 //Newest screen
                 case 1:
                     GridView newGrid = new GridView(getActivity());
-                    newGrid.setColumnWidth((int) Math.round(global.width / 3));
-                    newGrid.setNumColumns(3);
+                    newGrid.setColumnWidth((int) Math.round(global.width / 2));
+                    newGrid.setNumColumns(2);
                     newGrid.setVerticalSpacing(global.horizontalSpacing);
                     newGrid.setHorizontalSpacing(global.horizontalSpacing);
                     newGrid.setAdapter(new ImageAdapter(getActivity(), global, 1));
-
                     return newGrid;
 
                 //Featured screen
                 case 2:
                     GridView featuredGrid = new GridView(getActivity());
-                    featuredGrid.setColumnWidth((int) Math.round(global.width / 3));
+                    featuredGrid.setColumnWidth((int) Math.round(global.width / 2));
                     featuredGrid.setNumColumns(3);
                     featuredGrid.setVerticalSpacing(global.horizontalSpacing);
                     featuredGrid.setHorizontalSpacing(global.horizontalSpacing);
@@ -253,8 +270,8 @@ public class InitialView extends FragmentActivity implements
                 //Popular screen
                 case 3:
                     GridView popularGrid = new GridView(getActivity());
-                    popularGrid.setColumnWidth((int) Math.round(global.width / 3));
-                    popularGrid.setNumColumns(3);
+                    popularGrid.setColumnWidth((int) Math.round(global.width / 2));
+                    popularGrid.setNumColumns(2);
                     popularGrid.setVerticalSpacing(global.horizontalSpacing);
                     popularGrid.setHorizontalSpacing(global.horizontalSpacing);
 

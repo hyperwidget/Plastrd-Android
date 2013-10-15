@@ -26,9 +26,9 @@
             </intent-filter>
         </activity>
         <activity android:name="FullScreen"></activity>
-        <activity android:name="InitialView"></activity>
+        <activity android:name="InitialView" android:exported="true"></activity>
 
-        <receiver android:name="RepeatingAlarm"></receiver>
+        <receiver android:name="RepeatingAlarm" android:exported="true"></receiver>
     </application>
 
 </manifest>

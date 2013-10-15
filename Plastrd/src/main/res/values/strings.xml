@@ -4,6 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="get">Get Json from Server</string>
+    <string name="turnOffService">Turn off service</string>
+    <string name="turnOnService">Turn on service</string>
     <color name="backgroundGray">#231F20</color>
     <color name="darkgray">#2d292b</color>
 </resources>

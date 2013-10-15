@@ -46,7 +46,7 @@ public class FullScreen extends Activity {
         int width = size.x;
         int height = size.y;
 
-        String path = "http://www.calmlycoding.com:78/Plastrd/serveImage.php?uuid=" + intent.getExtras().getString("uuid") + "&height=" + height + "&width=" + width * 2;
+        String path = "http://getPlastrd.com/serveImage.php?id=" + intent.getExtras().getString("id") + "&height=" + height + "&width=" + width * 2;
 
         String[] allowedContentTypes = new String[]{"image/png", "image/jpeg"};
         client.get(path, new BinaryHttpResponseHandler(allowedContentTypes) {

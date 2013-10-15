@@ -59,6 +59,7 @@ public class ImageAdapter extends BaseAdapter {
                 final int tempPosition = position;
                 final ViewGroup tempParent = parent;
                 final PlastrdImageView imageView;
+
                 if (convertView == null) {  // if it's not recycled, initialize some attributes
                     imageView = new PlastrdImageView(mContext);
                     imageView.setLayoutParams(new GridView.LayoutParams(global.thumbWidth, global.thumbWidth));
@@ -66,14 +67,14 @@ public class ImageAdapter extends BaseAdapter {
                 } else {
                     imageView = (PlastrdImageView) convertView;
                 }
-                imageView.uuid = global.firstHolderArray.get(tempPosition).getHolderUUID();
+                imageView.id = global.firstHolderArray.get(tempPosition).getHolderID();
                 imageView.setImageBitmap(global.firstHolderArray.get(tempPosition).getHolderBmap());
 
                 OnClickListener clickListener = new OnClickListener() {
                     public void onClick(View v) {
                         if (v.equals(imageView)) {
                             Intent intent = new Intent(tempParent.getContext(), FullScreen.class);
-                            intent.putExtra("uuid", imageView.uuid);
+                            intent.putExtra("id", imageView.id);
                             tempParent.getContext().startActivity(intent);
                         }
                     }
@@ -93,14 +94,14 @@ public class ImageAdapter extends BaseAdapter {
                 } else {
                     imageView2 = (PlastrdImageView) convertView;
                 }
-                imageView2.uuid = global.secondHolderArray.get(tempPosition2).getHolderUUID();
+                imageView2.id = global.secondHolderArray.get(tempPosition2).getHolderID();
                 imageView2.setImageBitmap(global.secondHolderArray.get(tempPosition2).getHolderBmap());
 
                 OnClickListener clickListener2 = new OnClickListener() {
                     public void onClick(View v) {
                         if (v.equals(imageView2)) {
                             Intent intent = new Intent(tempParent2.getContext(), FullScreen.class);
-                            intent.putExtra("uuid", imageView2.uuid);
+                            intent.putExtra("id", imageView2.id);
                             tempParent2.getContext().startActivity(intent);
                         }
                     }
@@ -120,14 +121,14 @@ public class ImageAdapter extends BaseAdapter {
                 } else {
                     imageView3 = (PlastrdImageView) convertView;
                 }
-                imageView3.uuid = global.secondHolderArray.get(tempPosition3).getHolderUUID();
+                imageView3.id = global.secondHolderArray.get(tempPosition3).getHolderID();
                 imageView3.setImageBitmap(global.secondHolderArray.get(tempPosition3).getHolderBmap());
 
                 OnClickListener clickListener3 = new OnClickListener() {
                     public void onClick(View v) {
                         if (v.equals(imageView3)) {
                             Intent intent = new Intent(tempParent3.getContext(), FullScreen.class);
-                            intent.putExtra("uuid", imageView3.uuid);
+                            intent.putExtra("id", imageView3.id);
                             tempParent3.getContext().startActivity(intent);
                         }
                     }

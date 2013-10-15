@@ -1,11 +1,9 @@
 package calmlycoding.com.plastrd;
 
 import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,7 +13,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.Display;
 import android.view.WindowManager;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -40,31 +37,30 @@ public class Plastrd extends Application {
             width = size.x;
             height = size.y;
 
-            thumbWidth = (int) Math.round(width * .95 / 3);
+            thumbWidth = (int) Math.round(width * .95 / 2);
 
-            horizontalSpacing = (int) Math.round(width * .05 / 2);
+            horizontalSpacing = (int) Math.round(width * .05);
 
-            System.out.println("Width: " + width + " thumbWidth: " + thumbWidth + " horizontalSpacing: " + horizontalSpacing);
+            //System.out.println("Width: " + width + " thumbWidth: " + thumbWidth + " horizontalSpacing: " + horizontalSpacing);
 
             firstHolderArray = new ArrayList<infoHolder>();
             secondHolderArray = new ArrayList<infoHolder>();
 
             final AsyncHttpClient client = new AsyncHttpClient();
-            client.get("http://www.calmlycoding.com:78/Plastrd/initialFetch.php", new JsonHttpResponseHandler() {
+            client.get("http://getPlastrd.com/initialFetch.php", new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(JSONArray json_data) {
                     JSONObject JSONContents;
-                    //System.out.println(json_data);
                     try {
                         JSONContents = json_data.getJSONObject(0);
                         JSONArray temp = JSONContents.getJSONArray("firstArray");
                         for (int i = 0; i < temp.length(); i++) {
                             final infoHolder tempHolder = new infoHolder();
                             JSONObject tempObj = (JSONObject) temp.get(i);
-                            String tempString = tempObj.getString("uuid");
-                            tempHolder.setHolderUUID(tempString);
-                            String path = "http://www.calmlycoding.com:78/Plastrd/serveImage.php?uuid=" +
-                                    tempObj.getString("uuid") + "&width=" + thumbWidth + "&height=" + thumbWidth;
+                            String tempString = tempObj.getString("id");
+                            tempHolder.setHolderid(tempString);
+                            String path = "http://getPlastrd.com/serveImage.php?id=" +
+                                    tempObj.getString("id") + "&width=" + thumbWidth + "&height=" + thumbWidth;
                             String[] allowedContentTypes = new String[]{"image/jpeg"};
                             client.get(path, new BinaryHttpResponseHandler(allowedContentTypes) {
                                 public void onSuccess(byte[] fileData) {
@@ -80,9 +76,9 @@ public class Plastrd extends Application {
                         for (int i = 0; i < temp.length(); i++) {
                             final infoHolder tempHolder = new infoHolder();
                             JSONObject tempObj = (JSONObject) temp.get(i);
-                            String tempString = tempObj.getString("uuid");
-                            tempHolder.setHolderUUID(tempString);
-                            String path = "http://www.calmlycoding.com:78/Plastrd/serveImage.php?uuid=" + tempObj.getString("uuid") + "&width=150&height=150";
+                            String tempString = tempObj.getString("id");
+                            tempHolder.setHolderid(tempString);
+                            String path = "http://getPlastrd.com/serveImage.php?id=" + tempObj.getString("id") + "&width=150&height=150";
                             String[] allowedContentTypes = new String[]{"image/jpeg"};
                             client.get(path, new BinaryHttpResponseHandler(allowedContentTypes) {
                                 public void onSuccess(byte[] fileData) {
@@ -95,9 +91,6 @@ public class Plastrd extends Application {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    //				System.out.println("FIRST ARRAY HAS " + firstArray.size());
-                    //				System.out.println("FIRSTHOLDERARRAY HAS " + firstHolderArray.size());
-                    //				System.out.println("SECONDHOLDERARRAY HAS " + secondHolderArray.size());
                 }
 
                 public void onFailure(Throwable e, String response) {
@@ -120,12 +113,11 @@ public class Plastrd extends Application {
             connected = true;
         }
         System.out.println(connected);
-
     }
 
     //Simple class to hold image attributes
     public class infoHolder {
-        private String holderUUID;
+        private String holderid;
         private Bitmap holderBmap;
 
         public Bitmap getHolderBmap() {
@@ -136,12 +128,12 @@ public class Plastrd extends Application {
             this.holderBmap = holderBmap;
         }
 
-        public String getHolderUUID() {
-            return holderUUID;
+        public String getHolderID() {
+            return holderid;
         }
 
-        public void setHolderUUID(String holderUUID) {
-            this.holderUUID = holderUUID;
+        public void setHolderid(String holderID) {
+            this.holderid = holderID;
         }
     }
 

@@ -4,7 +4,7 @@ import com.loopj.android.http.*;
 
 public class ServerTalker {
 
-    private static final String BASE_URL = "www.calmlycoding.com";
+    private static final String BASE_URL = "www.getPlastrd.com";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

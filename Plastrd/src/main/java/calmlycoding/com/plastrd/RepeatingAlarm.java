@@ -30,24 +30,29 @@ public class RepeatingAlarm extends BroadcastReceiver {
         int height = size.y;
 
         //Path to playlist(Will need to figure this out)
-        String path = "http://www.calmlycoding.com:78/Plastrd/serveRandom.php?height=" + height + "&width=" + width * 2;
+        String path = "http://getPlastrd.com/serveRandom.php?height=" + height + "&width=" + width * 2;
 
         //Init imageview, nullpointer error otherwise
         image = new ImageView(context);
         //Allow pngs or jpgs
         String[] allowedContentTypes = new String[]{"image/png", "image/jpeg"};
         //Get image using Asynchttp
+
         client.get(path, new BinaryHttpResponseHandler(allowedContentTypes) {
             public void onSuccess(byte[] fileData) {
                 bmp = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
                 image.setImageBitmap(bmp);
 
-                WallpaperManager WPMan = (WallpaperManager) context.getSystemService(Context.WALLPAPER_SERVICE);
+                WallpaperManager WPMan = (WallpaperManager)context.getSystemService(Context.WALLPAPER_SERVICE);
                 try {
                     WPMan.setBitmap(bmp);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            public void onFailure(Throwable e, byte[] imageData){
+                System.out.println("FAIL");
             }
         });
     }

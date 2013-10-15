@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 public class PlastrdImageView extends ImageView {
 
-    public String uuid;
+    public String id;
     public Bitmap bmap;
 
     public PlastrdImageView(Context context) {
